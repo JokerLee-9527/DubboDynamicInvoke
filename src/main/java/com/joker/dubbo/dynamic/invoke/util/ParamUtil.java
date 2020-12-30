@@ -21,9 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author Joey
- * @date 2018/6/13 19:22
- */
+* @Description: 请在此处输入方法描述信息
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:11
+* @version V1.0
+*/
 public class ParamUtil {
 
     public static HashMap<String,String> getAttachmentFromUrl(URL url) throws Exception {

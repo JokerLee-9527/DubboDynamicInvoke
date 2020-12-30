@@ -14,10 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.security.MessageDigest;
 
 /**
- * MD5加密工具类.
- * @author Joey
- * @date 2018/6/24 16:40
- */
+* @Description: MD5加密工具类.
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:11
+* @version V1.0
+*/
 @Slf4j
 public class MD5Util {
 

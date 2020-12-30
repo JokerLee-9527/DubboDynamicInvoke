@@ -15,9 +15,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**
- * @author Joey
- * @date 2018/6/15 14:54
- */
+* @Description: 请在此处输入方法描述信息
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:11
+* @version V1.0
+*/
 public class MethodModel {
 
     private final Method method;

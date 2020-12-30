@@ -31,9 +31,12 @@ import java.util.Map;
 import static com.joker.dubbo.dynamic.invoke.model.MethodModelParam.converter2MethodModelDTOList;
 
 /**
- * @author Joey
- * @date 2018/6/15 10:21
- */
+* @Description: 请在此处输入方法描述信息
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:10
+* @version V1.0
+*/
 public class CuratorHandler {
 
     private final String protocol;

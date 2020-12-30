@@ -15,9 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Joey
- * @date 2018/6/15 17:56
- */
+* @Description: 请在此处输入方法描述信息
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:12
+* @version V1.0
+*/
 public class UrlModel {
 
     private final String key;

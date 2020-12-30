@@ -11,12 +11,14 @@ package com.joker.dubbo.dynamic.invoke.model;
 
 import lombok.Data;
 
+
 /**
- * interface wrapper.
- *
- * @author Joey
- * @date 2018/6/18 17:51
- */
+* @Description: 请在此处输入方法描述信息
+* @author JokerLee
+* https://github.com/JokerLee-9527
+* @date 2020/12/30 16:12
+* @version V1.0
+*/
 @Data
 public class ServiceModel {
 

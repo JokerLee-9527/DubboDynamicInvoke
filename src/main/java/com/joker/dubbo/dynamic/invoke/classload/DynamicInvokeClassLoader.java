@@ -161,6 +161,11 @@ public class DynamicInvokeClassLoader extends ClassLoader {
         return new DynamicInvokeClassLoader("").loadClass(name, false);
     }
 
+    /**
+     *
+     * @param className
+     * @return
+     */
     private static byte[] get(String className) {
         return classMap.getOrDefault(className, null);
     }
