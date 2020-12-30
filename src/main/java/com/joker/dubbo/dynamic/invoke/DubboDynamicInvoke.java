@@ -55,23 +55,22 @@ public class DubboDynamicInvoke {
 
 
         // 动态加载jar,生成方法入参的 Object[]
-        Method runMethod = null;
+        Object[] params;
+        Method runMethod;
         DynamicLoadJar dynamicLoadJar = null;
         try {
             dynamicLoadJar = new DynamicLoadJar(jarPath);
             runMethod = dynamicLoadJar.getMethod(interfaceName, methodName);
+            if (runMethod == null) {
+                throw new DynamicInvokeException("Jar中未找到相应的Method");
+            }
+            params = ParamUtil.checkAndPrepareJsonParam(jsonParam, runMethod);
+            log.info("DubboDynamicInvoke run params:"+GsonUtils.toJsonString(params) );
         } finally {
-//            if (dynamicLoadJar != null) {
-//                dynamicLoadJar._DynamicLoadJar();
-//            }
+            if (dynamicLoadJar != null) {
+                dynamicLoadJar._DynamicLoadJar();
+            }
         }
-
-        if (runMethod == null) {
-            throw new DynamicInvokeException("Jar中未找到相应的Method");
-        }
-        Object[] params = ParamUtil.checkAndPrepareJsonParam(jsonParam, runMethod);
-        log.info("DubboDynamicInvoke run params:"+GsonUtils.toJsonString(params) );
-
 
         // 从zk中获取providers
         CuratorHandler curatorHandler = new CuratorHandler(dubboProtocol, zkHost, zkPort);
