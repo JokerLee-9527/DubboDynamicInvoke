@@ -6,7 +6,7 @@ import com.alibaba.dubbo.remoting.exchange.Request;
 import com.alibaba.dubbo.rpc.RpcInvocation;
 import com.alibaba.dubbo.rpc.RpcResult;
 import com.joker.dubbo.dynamic.invoke.classload.DynamicInvokeClassLoader;
-import com.joker.dubbo.dynamic.invoke.client.DoeClient;
+import com.joker.dubbo.dynamic.invoke.client.DubboNettyClient;
 import com.joker.dubbo.dynamic.invoke.client.channel.ResponseDispatcher;
 import com.joker.dubbo.dynamic.invoke.model.ConnectDTO;
 import com.joker.dubbo.dynamic.invoke.model.DubboDynamicInvokeParam;
@@ -84,7 +84,7 @@ public class DubboDynamicInvoke {
         url = url.addParameter(Constants.CODEC_KEY, dubboProtocol); // 非常重要，必须要设置编码器协议类型
         HashMap<String, String> map = ParamUtil.getAttachmentFromUrl(url);
 
-        DoeClient client = new DoeClient(url);
+        DubboNettyClient client = new DubboNettyClient(url);
         client.doConnect();
 
         // create request.
