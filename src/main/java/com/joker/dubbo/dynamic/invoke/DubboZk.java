@@ -7,7 +7,7 @@
  * you entered into with Founder.
  *
  */
-package com.joker.dubbo.dynamic.invoke.zk;
+package com.joker.dubbo.dynamic.invoke;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
@@ -16,28 +16,23 @@ import com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry;
 import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
 import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
-import com.joker.dubbo.dynamic.invoke.model.ConnectParam;
-import com.joker.dubbo.dynamic.invoke.model.MethodModelParam;
 import com.joker.dubbo.dynamic.invoke.model.ServiceModel;
 import com.joker.dubbo.dynamic.invoke.model.UrlModel;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.joker.dubbo.dynamic.invoke.model.MethodModelParam.converter2MethodModelDTOList;
-
 /**
-* @Description: 请在此处输入方法描述信息
+* @Description: 从zk中获取provider等方法
 * @author JokerLee
 * https://github.com/JokerLee-9527
 * @date 2020/12/30 16:10
 * @version V1.0
 */
-public class CuratorHandler {
+public class DubboZk {
 
     private final String protocol;
     private final String host;
@@ -46,13 +41,26 @@ public class CuratorHandler {
     private ZookeeperRegistry registry;
     private String root = "/dubbo";
 
-    public CuratorHandler(String protocol, String host, int port) {
+    /**
+     * 构造函数
+     *
+     * @param protocol
+     * @param host
+     * @param port
+     */
+    public DubboZk(String protocol, String host, int port) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
     }
 
-    public void doConnect() throws NoSuchFieldException, IllegalAccessException {
+    /**
+     * 创建zkClient
+     *
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public void open() throws NoSuchFieldException, IllegalAccessException {
 
         CuratorZookeeperTransporter zookeeperTransporter = new CuratorZookeeperTransporter();
         URL url = new URL(protocol, host, port);
@@ -65,7 +73,12 @@ public class CuratorHandler {
 
     }
 
-    public List<ServiceModel> getInterfaces() {
+    /**
+     * 获得所有接口
+     *
+     * @return
+     */
+    public List<ServiceModel> getAllInterfaces() {
         List<ServiceModel> ret = new ArrayList<>();
         List<String> list = zkClient.getChildren(root);
         for (int i = 0; i < list.size(); i++) {
@@ -73,48 +86,68 @@ public class CuratorHandler {
             model.setServiceName(list.get(i));
             ret.add(model);
         }
-
         return ret;
     }
 
-    public List<UrlModel> getProviders(ConnectParam dto) {
+    /**
+     * 从ZK获取interface
+     *
+     * @param interfaceName
+     * @param version
+     * @param group
+     * @return
+     */
+    public List<UrlModel> getProviders(String interfaceName,String version, String group) {
 
-        if (null == dto) {
-            throw new DynamicInvokeException("dto can't be null.");
-        }
-        if (StringUtils.isEmpty(dto.getServiceName())) {
-            throw new DynamicInvokeException("service name can't be null.");
+
+        if (StringUtils.isEmpty(interfaceName)) {
+            throw new DynamicInvokeException("interfaceName name can't be null.");
         }
 
         Map<String, String> map = new HashMap<>();
-        map.put(Constants.INTERFACE_KEY, dto.getServiceName());
+        map.put(Constants.INTERFACE_KEY, interfaceName);
 
-        if (StringUtils.isNotEmpty(dto.getVersion())) {
-            map.put(Constants.VERSION_KEY, dto.getVersion());
+        if (StringUtils.isNotEmpty(version)) {
+            map.put(Constants.VERSION_KEY, version);
         }
-        if (StringUtils.isNotEmpty(dto.getGroup())) {
-            map.put(Constants.GROUP_KEY, dto.getGroup());
+        if (StringUtils.isNotEmpty(group)) {
+            map.put(Constants.GROUP_KEY, group);
         }
 
         URL url = new URL(protocol, host, port, map);
         List<URL> list = registry.lookup(url);
 
-        return UrlModel.converter2UrlModelList(dto.getServiceName(), list);
+        return UrlModel.converter2UrlModelList(interfaceName, list);
     }
 
-    public List<MethodModelParam> getMethods(String interfaceName) throws ClassNotFoundException {
+//    /**
+//     * 获得接口的方法
+//     *
+//     * @param interfaceName
+//     * @return
+//     * @throws ClassNotFoundException
+//     */
+//    public List<MethodModelParam> getMethods(String interfaceName) throws ClassNotFoundException {
+//
+//        Class<?> clazz = Class.forName(interfaceName);
+//        Method[] methods = clazz.getMethods();
+//
+//        return converter2MethodModelDTOList(interfaceName, methods);
+//
+//    }
 
-        Class<?> clazz = Class.forName(interfaceName);
-        Method[] methods = clazz.getMethods();
-
-        return converter2MethodModelDTOList(interfaceName, methods); // 缓存一份，方便下次调用
-
-    }
-
+    /**
+     * 断开
+     */
     public void close() {
         registry.destroy();
     }
 
+    /**
+     * 判断是否可用
+     *
+     * @return
+     */
     public boolean isAvailable() {
         return registry.isAvailable();
     }

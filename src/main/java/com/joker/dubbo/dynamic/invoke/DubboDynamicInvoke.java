@@ -8,12 +8,10 @@ import com.alibaba.dubbo.rpc.RpcResult;
 import com.joker.dubbo.dynamic.invoke.client.DubboNettyClient;
 import com.joker.dubbo.dynamic.invoke.client.channel.ResponseDispatcher;
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
-import com.joker.dubbo.dynamic.invoke.model.ConnectParam;
 import com.joker.dubbo.dynamic.invoke.model.DubboDynamicInvokeParam;
 import com.joker.dubbo.dynamic.invoke.model.UrlModel;
 import com.joker.dubbo.dynamic.invoke.util.GsonUtils;
 import com.joker.dubbo.dynamic.invoke.util.ParamUtil;
-import com.joker.dubbo.dynamic.invoke.zk.CuratorHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,16 +71,13 @@ public class DubboDynamicInvoke {
         }
 
         // 从zk中获取providers
-        CuratorHandler curatorHandler = new CuratorHandler(dubboProtocol, zkHost, zkPort);
+        DubboZk dubboZk = new DubboZk(dubboProtocol, zkHost, zkPort);
         List<UrlModel> providerUrls;
         try {
-            curatorHandler.doConnect();
-            ConnectParam conn = new ConnectParam();
-            conn.setServiceName(interfaceName);
-            conn.setVersion(dubboVersion);
-            providerUrls = curatorHandler.getProviders(conn);
+            dubboZk.open();
+            providerUrls = dubboZk.getProviders(interfaceName,dubboVersion,null);
         } finally {
-            curatorHandler.close();
+            dubboZk.close();
         }
 
 
