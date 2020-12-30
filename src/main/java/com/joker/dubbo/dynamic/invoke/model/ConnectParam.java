@@ -16,7 +16,7 @@ import lombok.Data;
  * @date 2018/6/18 19:10
  */
 @Data
-public class ConnectDTO {
+public class ConnectParam {
 
     /**
      * ip and port.

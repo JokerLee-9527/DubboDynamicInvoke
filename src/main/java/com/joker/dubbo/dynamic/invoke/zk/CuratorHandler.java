@@ -16,8 +16,8 @@ import com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry;
 import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
 import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
-import com.joker.dubbo.dynamic.invoke.model.ConnectDTO;
-import com.joker.dubbo.dynamic.invoke.model.MethodModelDTO;
+import com.joker.dubbo.dynamic.invoke.model.ConnectParam;
+import com.joker.dubbo.dynamic.invoke.model.MethodModelParam;
 import com.joker.dubbo.dynamic.invoke.model.ServiceModel;
 import com.joker.dubbo.dynamic.invoke.model.UrlModel;
 
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.joker.dubbo.dynamic.invoke.model.MethodModelDTO.converter2MethodModelDTOList;
+import static com.joker.dubbo.dynamic.invoke.model.MethodModelParam.converter2MethodModelDTOList;
 
 /**
  * @author Joey
@@ -74,7 +74,7 @@ public class CuratorHandler {
         return ret;
     }
 
-    public List<UrlModel> getProviders(ConnectDTO dto) {
+    public List<UrlModel> getProviders(ConnectParam dto) {
 
         if (null == dto) {
             throw new DynamicInvokeException("dto can't be null.");
@@ -99,7 +99,7 @@ public class CuratorHandler {
         return UrlModel.converter2UrlModelList(dto.getServiceName(), list);
     }
 
-    public List<MethodModelDTO> getMethods(String interfaceName) throws ClassNotFoundException {
+    public List<MethodModelParam> getMethods(String interfaceName) throws ClassNotFoundException {
 
         Class<?> clazz = Class.forName(interfaceName);
         Method[] methods = clazz.getMethods();

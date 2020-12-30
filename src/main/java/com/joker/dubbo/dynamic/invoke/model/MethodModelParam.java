@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @date 2018/6/18 21:49
  */
 @Data
-public class MethodModelDTO {
+public class MethodModelParam {
 
     /**
      * the name of interface which the method belong to.
@@ -42,24 +42,24 @@ public class MethodModelDTO {
      */
     private String methodText;
 
-    public MethodModelDTO() {
+//    public MethodModelParam() {
+//
+//    }
 
-    }
-
-    public MethodModelDTO(MethodModel model) {
+    public MethodModelParam(MethodModel model) {
 
         this.methodKey = model.getKey();
         this.methodName = model.getMethod().getName();
         this.methodText = model.getMethodText();
     }
 
-    public static MethodModelDTO converter2MethodModelDTO(final String interfaceName, final Method method) {
+    public static MethodModelParam converter2MethodModelDTO(final String interfaceName, final Method method) {
         String key = generateMethodKey(method, interfaceName);
-        return new MethodModelDTO(new MethodModel(key, method));
+        return new MethodModelParam(new MethodModel(key, method));
     }
 
-    public static List<MethodModelDTO> converter2MethodModelDTOList(final String interfaceName, Method[] methods) {
-        return Arrays.stream(methods).map(method-> MethodModelDTO.converter2MethodModelDTO(interfaceName, method)).collect(Collectors.toList());
+    public static List<MethodModelParam> converter2MethodModelDTOList(final String interfaceName, Method[] methods) {
+        return Arrays.stream(methods).map(method-> MethodModelParam.converter2MethodModelDTO(interfaceName, method)).collect(Collectors.toList());
     }
 
     private static String generateMethodKey(Method method, String interfaceName) {
