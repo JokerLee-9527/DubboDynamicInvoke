@@ -15,13 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -86,6 +83,17 @@ public class DynamicInvokeClassLoader extends ClassLoader {
     }
 
     /**
+     * Add one class dynamically.
+     */
+    public static boolean addClass(String className, byte[] byteCode) {
+        if (!classMap.containsKey(className)) {
+            classMap.put(className, byteCode);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 从指定的目录加载
      */
     public void loadJars() throws Exception {
@@ -108,16 +116,27 @@ public class DynamicInvokeClassLoader extends ClassLoader {
         }
     }
 
+
     /**
-     * Add one class dynamically.
+     * 获取所有的Class
+     *
+     * @return
+     * @throws ClassNotFoundException
      */
-    public static boolean addClass(String className, byte[] byteCode) {
-        if (!classMap.containsKey(className)) {
-            classMap.put(className, byteCode);
-            return true;
-        }
-        return false;
+    public Map<String,Class<?>> loadAllClass() throws ClassNotFoundException {
+        Map<String,Class<?>> res = new HashMap<>();
+        classMap.keySet().forEach(u-> {
+            try {
+                res.put(u, loadClass(u,false));
+            } catch (ClassNotFoundException e) {
+                log.error("loadClass ex",e);
+            }
+        });
+
+        return res;
     }
+
+
 
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
@@ -144,40 +163,6 @@ public class DynamicInvokeClassLoader extends ClassLoader {
 
     private static byte[] get(String className) {
         return classMap.getOrDefault(className, null);
-    }
-
-    private void scanClassFile(File file) {
-        if (file.exists()) {
-            if (file.isFile() && file.getName().endsWith(".class")) {
-                try {
-                    byte[] byteCode = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-                    String className = file.getAbsolutePath().replace(this.path, "")
-                            .replace(File.separator, ".");
-
-                    className = makeClassName(className);
-
-                    addClass(className, byteCode);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (file.isDirectory()) {
-                for (File f : Objects.requireNonNull(file.listFiles())) {
-                    scanClassFile(f);
-                }
-            }
-        }
-    }
-
-    /**
-     * load classes from the Specified path.
-     */
-    public void loadClassFile() {
-        File[] files = new File(path).listFiles();
-        if (files != null) {
-            for (File file : files) {
-                scanClassFile(file);
-            }
-        }
     }
 
     /**
