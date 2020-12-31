@@ -52,6 +52,9 @@ public class DubboZk {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
+
+//        // todo
+//        BasicConfigurator.configure();
     }
 
     /**

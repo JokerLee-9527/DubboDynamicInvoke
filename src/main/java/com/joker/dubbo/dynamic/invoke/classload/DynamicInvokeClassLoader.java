@@ -9,9 +9,10 @@
  */
 package com.joker.dubbo.dynamic.invoke.classload;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
+
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

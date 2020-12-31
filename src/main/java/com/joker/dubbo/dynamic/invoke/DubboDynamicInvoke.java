@@ -39,6 +39,10 @@ public class DubboDynamicInvoke {
      */
     @SneakyThrows
     public static String run(DubboDynamicInvokeParam dubboDynamicInvokeParam) {
+
+//        // todo
+//        BasicConfigurator.configure();
+
         dubboDynamicInvokeParam.checkParam();
 
         final String jarPath = dubboDynamicInvokeParam.getJarPath();
@@ -77,7 +81,7 @@ public class DubboDynamicInvoke {
             dubboZk.open();
             providerUrls = dubboZk.getProviders(interfaceName,dubboVersion,null);
         } finally {
-            dubboZk.close();
+//            dubboZk.close();
         }
 
 

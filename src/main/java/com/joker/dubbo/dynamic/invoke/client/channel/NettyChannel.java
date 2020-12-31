@@ -18,11 +18,10 @@ package com.joker.dubbo.dynamic.invoke.client.channel;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.logger.Logger;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.remoting.ChannelHandler;
 import com.alibaba.dubbo.remoting.RemotingException;
 import com.alibaba.dubbo.remoting.transport.AbstractChannel;
+import lombok.extern.slf4j.Slf4j;
 import org.jboss.netty.channel.ChannelFuture;
 
 import java.net.InetSocketAddress;
@@ -33,9 +32,8 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * NettyChannel.
  */
+@Slf4j
 public class NettyChannel extends AbstractChannel {
-
-    private static final Logger logger = LoggerFactory.getLogger(NettyChannel.class);
 
     private static final ConcurrentMap<org.jboss.netty.channel.Channel, NettyChannel> channelMap = new ConcurrentHashMap<org.jboss.netty.channel.Channel, NettyChannel>();
 
@@ -115,25 +113,25 @@ public class NettyChannel extends AbstractChannel {
         try {
             super.close();
         } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
         try {
             removeChannelIfDisconnected(channel);
         } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
         try {
             attributes.clear();
         } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
         try {
-            if (logger.isInfoEnabled()) {
-                logger.info("Close netty channel " + channel);
+            if (log.isInfoEnabled()) {
+                log.info("Close netty channel " + channel);
             }
             channel.close();
         } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
     }
 

@@ -8,9 +8,15 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <!--    <parent>-->
+    <!--        <groupId>org.apache</groupId>-->
+    <!--        <artifactId>apache</artifactId>-->
+    <!--        <version>23</version>-->
+    <!--    </parent>-->
+
     <modelVersion>4.0.0</modelVersion>
-	
-	<groupId>com.github.JokerLee-9527</groupId>
+
+    <groupId>com.github.JokerLee-9527</groupId>
     <artifactId>dubbo-dynamic-invoke</artifactId>
     <version>1.0.0</version>
     <name>DubboDynamicInvoke</name>
@@ -40,6 +46,10 @@
         <java.version>1.8</java.version>
         <!-- springboot 整合 dubbo -->
         <version.starter.dubbo>0.2.0</version.starter.dubbo>
+        <dubbo.version>2.6.5</dubbo.version>
+        <fastjson.version>1.2.46</fastjson.version>
+        <commons-text.version>1.3</commons-text.version>
+        <junit.version>4.13.1</junit.version>
 
         <gson.version>2.8.5</gson.version>
     </properties>
@@ -59,93 +69,68 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+        <!-- SLF4J Bridge -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <!-- Spring Boot Redis 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>${version.starter.dubbo}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.46</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/ru.dmerkushov/xml-helper -->
-        <dependency>
-            <groupId>ru.dmerkushov</groupId>
-            <artifactId>xml-helper</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
-        <!-- 要用redis连接池 必须有pool依赖-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.3</version>
+            <version>${commons-text.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>3.6</version>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>${junit.version}</version>
         </dependency>
 
-
-        <!-- 测试使用 -->
-<!--        <dependency>-->
-<!--            <groupId>mmc-dubbo</groupId>-->
-<!--            <artifactId>api</artifactId>-->
-<!--            <version>1.0-RELEASE</version>-->
-<!--        </dependency>-->
-
-    
 
     </dependencies>
 
@@ -157,6 +142,14 @@
             </activation>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
