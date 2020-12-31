@@ -18,12 +18,10 @@
 
 #### TODO LIst
 
-1. 封装jar中获取接口及方法.
+1. 从maven中下载jar.
 
-2. zk中获取rpc接口的provider和method
+2. Telnet调用dubbo接口(以前插件中使用, 中文会有乱码一直未解决)
 
-3. Telnet调用dubbo接口(以前插件中使用, 中文会有乱码一直未解决)
-
-4. 上传maven 公共仓库,直接在pom.xml中添加依赖使用.
-
-5. 
+3. 上传maven 公共仓库,直接在pom.xml中添加依赖使用.
+   
+   
