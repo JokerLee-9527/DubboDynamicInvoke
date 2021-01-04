@@ -15,6 +15,7 @@ import com.alibaba.dubbo.common.utils.PojoUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
+import com.joker.dubbo.dynamic.invoke.model.PointModel;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -85,19 +86,21 @@ public class ParamUtil {
         return array;
     }
 
-//    /**
-//     * parse ip and port from the conn.
-//     *
-//     * @param conn
-//     * @return
-//     */
-//    public static PointModel parsePointModel(@NotNull String conn) {
-//
-//        // split host and port
-//        String[] pairs = conn.replace("：", ":").split(":");
-//        String host = pairs[0];
-//        String port = pairs[1];
-//
-//        return new PointModel(host, Integer.valueOf(port));
-//    }
+
+
+    /**
+     * parse ip and port from the conn.
+     *
+     * @param conn
+     * @return
+     */
+    public static PointModel parsePointModel(String conn) {
+
+        // split host and port
+        String[] pairs = conn.replace("：", ":").split(":");
+        String host = pairs[0];
+        String port = pairs[1];
+
+        return new PointModel(host, Integer.valueOf(port));
+    }
 }

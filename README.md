@@ -16,12 +16,22 @@
    
    (测试中的provider可以参考 [GitHub - JokerLee-9527/JokerIntellijPlugin: Intellij Plugin](https://github.com/JokerLee-9527/JokerIntellijPlugin.git)    TestProject)
 
+2. 从zk中获取provider参考
+   
+   test.com.joker.dubbo.dynamic.invoke.DubboZkTest
+
+3. 动态加载Jar, 并获取class和method参考
+   
+   test.com.joker.dubbo.dynamic.invoke.DynamicLoadJarTest
+
+4. Telnet命令执行dubbo查考 (中文乱码)
+   
+   test.com.joker.dubbo.dynamic.invoke.DubboTelnetTest#testExecuteCommandInvokeDubbo
+   
+   
+
 #### TODO LIst
 
 1. 从maven中下载jar.
 
-2. Telnet调用dubbo接口(以前插件中使用, 中文会有乱码一直未解决)
-
-3. 上传maven 公共仓库,直接在pom.xml中添加依赖使用.
-   
-   
+2. 上传maven 公共仓库,直接在pom.xml中添加依赖使用.
