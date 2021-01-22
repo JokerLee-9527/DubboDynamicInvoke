@@ -1,4 +1,4 @@
-# DubboDynamicInvoke
+# DubboDynamicInvoke (未完成)
 
 ## 无需编码写死要调用的接口依赖,动态调用dubbo接口
 
