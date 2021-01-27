@@ -33,12 +33,25 @@ import java.util.concurrent.TimeUnit;
 public class DubboDynamicInvoke {
 
 
+    /**
+     * 1. 构建pom.xml
+     * 2. 通过mvn下载jar
+     * 3. 自定义classloader中加载class
+     * 4. 序列化对象
+     * 5. netty tcp实现远程rpc调用
+     *
+     * @param dubboDynamicInvokeWithDownloadJarParam
+     * @return
+     */
     public static String runWithDownLoadJar(DubboDynamicInvokeWithDownloadJarParam dubboDynamicInvokeWithDownloadJarParam) {
 
-        // 下载jar包
+        // 1. 构建pom.xml
+        // 2. 通过mvn下载jar
         PomUtil.startDownloadJar(dubboDynamicInvokeWithDownloadJarParam.getStartDownloadJarParam());
 
-        // 加载到classload
+        // 3. 自定义classloader中加载class
+        // 4. 序列化对象
+        // 5. netty tcp实现远程rpc调用
         return run(dubboDynamicInvokeWithDownloadJarParam);
     }
 
