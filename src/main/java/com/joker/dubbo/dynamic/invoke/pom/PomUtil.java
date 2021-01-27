@@ -48,80 +48,30 @@ public class PomUtil {
             "    </dependencies>\n" +
             "</project>\n";
 
+    /**
+     * 通过定义的依赖,下载相关的Jar包
+     *
+     * @param startDownloadJarParam
+     */
     @SneakyThrows
     public static void startDownloadJar(StartDownloadJarParam startDownloadJarParam) {
         String fileName = startDownloadJarParam.getPomXmlFileName();
         String filePath = FileUtil.getFilePath(fileName);
         FileUtil.deleteDirectory(filePath);
-//        Thread.sleep(500);
         FileUtil.createDirectory(filePath);
-//        Thread.sleep(500);
 
-
-        PomUtil.appendPom(startDownloadJarParam);
-//        Thread.sleep(500);
+        PomUtil.createPom(startDownloadJarParam);
         PomUtil.downloadJar(fileName, null);
         Thread.sleep(10000);
     }
 
-//    /**
-//     * 生产新的pom.xml文件
-//     *
-//     * @param models
-//     * @param pomXmlPath
-//     * @throws Exception
-//     */
-//    public static void appendPom(List<DependencyModel> models, String pomXmlPath) throws Exception {
-//
-//
-//        File file = new File(pomXmlPath);
-//
-//        // 1.得到DOM解析器的工厂实例
-//        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//        // 2.从DOM工厂里获取DOM解析器
-//        DocumentBuilder db = dbf.newDocumentBuilder();
-//        // 3.解析XML文档，得到document，即DOM树
-//
-//        Document doc = db.parse(new ByteArrayInputStream(POM_XML_ORG.getBytes()));
-//        // root
-//        Element rootDependency = (Element) doc.getElementsByTagName("dependencies").item(0);
-//
-//        for (DependencyModel model : models) {
-//
-//            // 创建节点
-//            Element dependencyElement = doc.createElement("dependency");
-//            // 创建group节点
-//            Element groupElement = doc.createElement("groupId");
-//            groupElement.appendChild(doc.createTextNode(model.getGroupId()));
-//            // 创建artifactId节点
-//            Element artifactIdElement = doc.createElement("artifactId");
-//            artifactIdElement.appendChild(doc.createTextNode(model.getArtifactId()));
-//            // 创建version节点
-//            Element versionElement = doc.createElement("version");
-//            versionElement.appendChild(doc.createTextNode(model.getVersion()));
-//            // 添加父子关系
-//            dependencyElement.appendChild(groupElement);
-//            dependencyElement.appendChild(artifactIdElement);
-//            dependencyElement.appendChild(versionElement);
-//            // 追加节点
-//            rootDependency.appendChild(dependencyElement);
-//        }
-//        // 保存到xml文件
-//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//        Transformer transformer = transformerFactory.newTransformer();
-//        // 格式化
-//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-//        // 设置编码类型
-//        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-//        DOMSource domSource = new DOMSource(doc);
-//        StreamResult result = new StreamResult(new FileOutputStream(file));
-//        // 把DOM树转换为xml文件
-//        transformer.transform(domSource, result);
-//    }
-
-
-    public static void appendPom(StartDownloadJarParam startDownloadJarParam) throws Exception {
+    /**
+     * 构造pom.xml文件,供mvn下载Jar包使用
+     *
+     * @param startDownloadJarParam
+     * @throws Exception
+     */
+    public static void createPom(StartDownloadJarParam startDownloadJarParam) throws Exception {
 
         final String pomXmlPath = startDownloadJarParam.getPomXmlFileName();
         final List<DependencyModel> dependencyModelList = startDownloadJarParam.getDependencyModelList();
@@ -200,6 +150,12 @@ public class PomUtil {
     }
 
 
+    /**
+     * 根据pom.xml,通过mvn命令,下载Jar包
+     *
+     * @param pomXmlPath
+     * @param savePath
+     */
     @SneakyThrows
     public static void downloadJar(String pomXmlPath, String savePath) {
 
@@ -220,54 +176,50 @@ public class PomUtil {
         try {
             Process process = Runtime.getRuntime().exec(command);
             final InputStream inputStream = process.getInputStream();
-            //获取进城的错误流
+            //获取进程的错误流
             final InputStream errorStream = process.getErrorStream();
 
 
             StringBuilder inputStr = new StringBuilder();
             //启动两个线程，一个线程负责读标准输出流，另一个负责读标准错误流
-            new Thread() {
-                public void run() {
-                    BufferedReader br1 = new BufferedReader(new InputStreamReader(inputStream));
+            new Thread(() -> {
+                BufferedReader br1 = new BufferedReader(new InputStreamReader(inputStream));
+                try {
+                    String line1 = br1.readLine();
+                    while (line1 != null) {
+                        inputStr.append(line1).append(System.lineSeparator());
+                        line1 = br1.readLine();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
                     try {
-                        String line1 = br1.readLine();
-                        while (line1 != null) {
-                            inputStr.append(line1).append(System.lineSeparator());
-                            line1 = br1.readLine();
-                        }
+                        inputStream.close();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
-                        try {
-                            inputStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
-            }.start();
+            }).start();
 
             StringBuilder errorStr = new StringBuilder();
-            new Thread() {
-                public void run() {
-                    BufferedReader br2 = new BufferedReader(new InputStreamReader(errorStream));
+            new Thread(() -> {
+                BufferedReader br2 = new BufferedReader(new InputStreamReader(errorStream));
+                try {
+                    String line2 = br2.readLine();
+                    while (line2 != null) {
+                        errorStr.append(line2).append(System.lineSeparator());
+                        line2 = br2.readLine();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
                     try {
-                        String line2 = br2.readLine();
-                        while (line2 != null) {
-                            errorStr.append(line2).append(System.lineSeparator());
-                            line2 = br2.readLine();
-                        }
+                        errorStream.close();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
-                        try {
-                            errorStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
-            }.start();
+            }).start();
             process.waitFor();
 
             log.info("downloadJar output:" + inputStr.toString());
@@ -277,13 +229,5 @@ public class PomUtil {
             throw e;
         }
     }
-
-    @SneakyThrows
-    public static String outputStream2String(OutputStream stream) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byteArrayOutputStream.writeTo(stream);
-        return byteArrayOutputStream.toString();
-    }
-
 
 }
