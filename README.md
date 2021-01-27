@@ -12,7 +12,7 @@
 
 ### 使用方法:
 
-1. dubbo动态执行查考com.joker.dubbo.dynamic.invoke.TestDubboDynamicInvoke#main
+1. dubbo动态执行查考test.com.joker.dubbo.dynamic.invoke.DubboDynamicInvokeTest.testDubboDynamicInvokeRunWithDownLoadJar
    
    (测试中的provider可以参考 [GitHub - JokerLee-9527/JokerIntellijPlugin: Intellij Plugin](https://github.com/JokerLee-9527/JokerIntellijPlugin.git)    TestProject)
 
