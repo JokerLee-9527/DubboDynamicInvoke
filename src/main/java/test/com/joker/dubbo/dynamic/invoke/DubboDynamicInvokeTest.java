@@ -42,6 +42,7 @@ public class DubboDynamicInvokeTest {
                 .build();
 
 
+        // 如果接口定义中都是Java基本类型,就不用下载依赖的Jar包,并加载到自定义ClassLoader中
         final String run = DubboDynamicInvoke.run(param);
         System.out.println(run);
 
