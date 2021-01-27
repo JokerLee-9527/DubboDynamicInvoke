@@ -1,4 +1,4 @@
-# DubboDynamicInvoke (未完成)
+# DubboDynamicInvoke (初步完成,进一步测试和demo编写中)
 
 ## 无需编码写死要调用的接口依赖,动态调用dubbo接口
 
@@ -31,7 +31,5 @@
    
 
 #### TODO LIst
-
-1. 从maven中下载jar.
-
-2. 上传maven 公共仓库,直接在pom.xml中添加依赖使用.
+1. 上传maven公共仓库,直接在pom.xml中添加依赖使用.
+2. Demo项目编写中
