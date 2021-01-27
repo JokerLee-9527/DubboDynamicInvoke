@@ -35,7 +35,7 @@ public class DynamicLoadJar {
     @SneakyThrows
     public Map<String, Class<?>> getAllClass() {
         dynamicInvokeClassLoader.loadJars();
-        return dynamicInvokeClassLoader.loadAllClass();
+        return dynamicInvokeClassLoader.getAllClass();
     }
 
 

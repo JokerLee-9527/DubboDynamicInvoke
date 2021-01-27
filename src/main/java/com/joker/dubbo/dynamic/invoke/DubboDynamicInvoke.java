@@ -9,7 +9,9 @@ import com.joker.dubbo.dynamic.invoke.client.DubboNettyClient;
 import com.joker.dubbo.dynamic.invoke.client.channel.ResponseDispatcher;
 import com.joker.dubbo.dynamic.invoke.exception.DynamicInvokeException;
 import com.joker.dubbo.dynamic.invoke.model.DubboDynamicInvokeParam;
+import com.joker.dubbo.dynamic.invoke.model.DubboDynamicInvokeWithDownloadJarParam;
 import com.joker.dubbo.dynamic.invoke.model.UrlModel;
+import com.joker.dubbo.dynamic.invoke.pom.PomUtil;
 import com.joker.dubbo.dynamic.invoke.util.GsonUtils;
 import com.joker.dubbo.dynamic.invoke.util.ParamUtil;
 import lombok.SneakyThrows;
@@ -30,6 +32,15 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class DubboDynamicInvoke {
 
+
+    public static String runWithDownLoadJar(DubboDynamicInvokeWithDownloadJarParam dubboDynamicInvokeWithDownloadJarParam) {
+
+        // 下载jar包
+        PomUtil.startDownloadJar(dubboDynamicInvokeWithDownloadJarParam.getStartDownloadJarParam());
+
+        // 加载到classload
+        return run(dubboDynamicInvokeWithDownloadJarParam);
+    }
 
     /**
      * 动态执行dubbo接口

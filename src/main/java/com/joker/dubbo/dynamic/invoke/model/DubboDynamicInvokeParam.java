@@ -36,7 +36,7 @@ public class DubboDynamicInvokeParam {
     /**
      * jar包的路径
      */
-    private String jarPath;
+    private String jarPath = ".\\lib_tem\\";
 
     // protocol, host, port
     /**
@@ -69,11 +69,6 @@ public class DubboDynamicInvokeParam {
         ParamCheckerUtil.notBlank(this.dubboProtocol, "dubboProtocol不能为空");
         ParamCheckerUtil.notBlank(this.zkHost, "zkHost不能为空");
         ParamCheckerUtil.nonNull(this.zkPort, "zkPort不能为空");
-
-
     }
-
-
-
 
 }

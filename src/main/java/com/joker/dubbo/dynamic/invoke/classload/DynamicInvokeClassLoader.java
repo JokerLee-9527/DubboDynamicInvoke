@@ -39,6 +39,17 @@ public class DynamicInvokeClassLoader extends ClassLoader {
 
     private static Map<String, byte[]> classMap = new ConcurrentHashMap<>();
 
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        Class<?> resClass = null;
+        try {
+            resClass = loadClass(name, false);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+        return resClass;
+    }
+
 
     /**
      * destroy the Parental Entrustment.
@@ -56,7 +67,6 @@ public class DynamicInvokeClassLoader extends ClassLoader {
         Enumeration<JarEntry> en = jar.entries();
         while (en.hasMoreElements()) {
             JarEntry je = en.nextElement();
-            je.getName();
             String name = je.getName();
             if (name.endsWith(".class")) {
 
@@ -88,7 +98,9 @@ public class DynamicInvokeClassLoader extends ClassLoader {
      */
     public static boolean addClass(String className, byte[] byteCode) {
         if (!classMap.containsKey(className)) {
+//            System.out.println("addClass className:" + className);
             classMap.put(className, byteCode);
+//            System.out.println("addClass classMap size:" + classMap.size());
             return true;
         }
         return false;
@@ -124,7 +136,7 @@ public class DynamicInvokeClassLoader extends ClassLoader {
      * @return
      * @throws ClassNotFoundException
      */
-    public Map<String,Class<?>> loadAllClass() throws ClassNotFoundException {
+    public Map<String,Class<?>> getAllClass() throws ClassNotFoundException {
         Map<String,Class<?>> res = new HashMap<>();
         classMap.keySet().forEach(u-> {
             try {
