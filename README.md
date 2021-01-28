@@ -33,12 +33,14 @@
 1. 上传maven公共仓库,直接在pom.xml中添加依赖使用.
 2. Demo项目编写中
 
-
-
 #### 补充
 
-1.  dubbo 协议编码参考 [dubbo/ExchangeCodec.java at dd4f6af838772c577c12ad85896267511c494eaa · JokerLee-9527/dubbo · GitHub](https://github.com/JokerLee-9527/dubbo/blob/dd4f6af838772c577c12ad85896267511c494eaa/dubbo-remoting/dubbo-remoting-api/src/main/java/org/apache/dubbo/remoting/exchange/codec/ExchangeCodec.java#L210)
-   
-   
-   
-    
+1. dubbo 协议编码参考 [dubbo/ExchangeCodec.java at dd4f6af838772c577c12ad85896267511c494eaa · JokerLee-9527/dubbo · GitHub](https://github.com/JokerLee-9527/dubbo/blob/dd4f6af838772c577c12ad85896267511c494eaa/dubbo-remoting/dubbo-remoting-api/src/main/java/org/apache/dubbo/remoting/exchange/codec/ExchangeCodec.java#L210)
+
+
+
+# 开发者
+
+JokerLee  lijian79@gmail.com
+
+蔡超 1134788957@qq.com
